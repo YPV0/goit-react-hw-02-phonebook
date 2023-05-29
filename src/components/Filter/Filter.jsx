@@ -12,11 +12,7 @@ export class Filter extends Component {
       <FilterContainer>
         <label>
           Find contacts by name or number
-          <FilterField
-            type="text"
-            name="filter"
-            onChange={this.handleFilterChange}
-          />
+          <FilterField type="text" name="filter" onChange={this.handleChange} />
         </label>
       </FilterContainer>
     );
