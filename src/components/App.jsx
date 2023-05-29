@@ -16,16 +16,7 @@ export class App extends Component {
   };
 
   addContact = (name, number) => {
-    const duplicate = this.state.contacts.find(
-      contact => contact.name === name
-    );
-
-    if (!name.trim() || !number.trim()) {
-      alert('Both fields are required.');
-      return;
-    }
-
-    if (duplicate) {
+    if (this.state.contacts.some(contact => contact.name === name)) {
       alert(`${name} is already in contacts.`);
       return;
     }
@@ -46,24 +37,25 @@ export class App extends Component {
   };
 
   render() {
-    const filteredContacts = this.state.contacts.filter(
+    const { contacts, filter } = this.state;
+
+    const filteredContacts = contacts.filter(
       contact =>
-        contact.name.toLowerCase().includes(this.state.filter.toLowerCase()) ||
-        contact.number.includes(this.state.filter)
+        contact.name.toLowerCase().includes(filter.toLowerCase()) ||
+        contact.number.includes(filter)
     );
 
     return (
       <section>
         <div>
-          <h1>Phonebook</h1>
-          <Form onAddContact={this.addContact}></Form>
+          <Form onAddContact={this.addContact} />
         </div>
         <div>
-          <Filter onFilterChange={this.handleFilterChange}></Filter>
+          <Filter onFilterChange={this.handleFilterChange} />
           <Contacts
             contacts={filteredContacts}
             onRemoveContact={this.removeContact}
-          ></Contacts>
+          />
         </div>
       </section>
     );

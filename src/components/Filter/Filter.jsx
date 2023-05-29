@@ -1,4 +1,6 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
+import { FilterContainer, FilterField } from './Filter.styled';
 
 export class Filter extends Component {
   handleChange = event => {
@@ -7,14 +9,20 @@ export class Filter extends Component {
 
   render() {
     return (
-      <div>
-        <h2>Filter Contacts</h2>
-        <input
-          type="text"
-          onChange={this.handleChange}
-          placeholder="Search contacts..."
-        />
-      </div>
+      <FilterContainer>
+        <label>
+          Find contacts by name or number
+          <FilterField
+            type="text"
+            name="filter"
+            onChange={this.handleFilterChange}
+          />
+        </label>
+      </FilterContainer>
     );
   }
 }
+
+Filter.propTypes = {
+  onFilterChange: PropTypes.func.isRequired,
+};
