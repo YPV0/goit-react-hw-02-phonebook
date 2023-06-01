@@ -10,6 +10,16 @@ export class Form extends Component {
 
   formRef = createRef();
 
+  componentDidMount() {
+    this.nameInput.addEventListener('input', this.handleAutoComplete);
+    this.numberInput.addEventListener('input', this.handleAutoComplete);
+  }
+
+  componentWillUnmount() {
+    this.nameInput.removeEventListener('input', this.handleAutoComplete);
+    this.numberInput.removeEventListener('input', this.handleAutoComplete);
+  }
+
   handleSubmit = e => {
     e.preventDefault();
     this.props.onAddContact(this.state.name, this.state.number);
@@ -18,6 +28,11 @@ export class Form extends Component {
   };
 
   handleChange = e => {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  };
+
+  handleAutoComplete = e => {
     const { name, value } = e.target;
     this.setState({ [name]: value });
   };
@@ -31,6 +46,7 @@ export class Form extends Component {
           type="text"
           name="name"
           onChange={this.handleChange}
+          ref={input => (this.nameInput = input)}
           pattern="^[a-zA-Z\u0430-\u044F\u0410-\u042F]+(([' -][a-zA-Z\u0430-\u044F\u0410-\u042F ])?[a-zA-Z\u0430-\u044F\u0410-\u042F]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
@@ -40,6 +56,7 @@ export class Form extends Component {
           type="tel"
           name="number"
           onChange={this.handleChange}
+          ref={input => (this.numberInput = input)}
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
@@ -49,6 +66,7 @@ export class Form extends Component {
     );
   }
 }
+
 Form.propTypes = {
   onAddContact: PropTypes.func.isRequired,
 };
